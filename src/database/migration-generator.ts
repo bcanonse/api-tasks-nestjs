@@ -24,7 +24,7 @@ const command = `npm run typeorm migration:generate ./migrations/${migrationName
 try {
   execSync(command, { stdio: 'inherit' });
 
-  console.log(
+  console.info(
     `Migración '${migrationName}' generada con éxito.`,
   );
 } catch (error) {

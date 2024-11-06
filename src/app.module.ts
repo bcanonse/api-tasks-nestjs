@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { AutomapperModule } from '@automapper/nestjs';
+import { classes } from '@automapper/classes';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { environments } from './environments';
@@ -19,6 +22,9 @@ import { UsersModule } from './users/users.module';
       validate,
       isGlobal: true,
       cache: true,
+    }),
+    AutomapperModule.forRoot({
+      strategyInitializer: classes(),
     }),
     DatabaseModule,
     ProjectsModule,

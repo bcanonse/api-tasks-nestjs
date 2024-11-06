@@ -52,7 +52,7 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  console.log(
+  console.info(
     `Application running on: ${await app.getUrl()}`,
   );
 }
