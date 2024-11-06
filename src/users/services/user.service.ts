@@ -10,7 +10,7 @@ import { UsersDto } from '../dto/user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 
 import { UsersEntity } from '../entities/users.entity';
-import { ErrorManager } from 'src/utils';
+import { ErrorManager } from '../../utils';
 
 @Injectable()
 export class UserService {
@@ -104,7 +104,14 @@ export class UserService {
     id: string,
   ): Promise<UsersDto | null> {
     try {
-      const user = await this.repository.findOneBy({ id });
+      const user = await this.repository
+        .createQueryBuilder('user')
+        .where({ id })
+        .leftJoinAndSelect(
+          'user.projectsIncludes',
+          'projectsIncludes',
+        )
+        .getOne();
 
       if (!user)
         throw new ErrorManager({

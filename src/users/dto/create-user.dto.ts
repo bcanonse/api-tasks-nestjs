@@ -8,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 
-import { ROLES } from 'src/constants';
+import { ROLES } from '../../constants';
 
 export class CreateUserDto {
   @AutoMap()

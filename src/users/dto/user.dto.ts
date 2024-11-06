@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 
-import { ROLES } from 'src/constants';
+import { ROLES } from '../../constants';
 
 export class UsersDto {
   @AutoMap()
