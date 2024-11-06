@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { DeleteResult, Repository } from 'typeorm';
@@ -16,6 +10,7 @@ import { UsersDto } from '../dto/user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 
 import { UsersEntity } from '../entities/users.entity';
+import { ErrorManager } from 'src/utils';
 
 @Injectable()
 export class UserService {
@@ -48,9 +43,8 @@ export class UserService {
         })
         .getExists();
     } catch (error) {
-      throw new HttpException(
+      throw ErrorManager.createSignatureError(
         error?.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -67,9 +61,10 @@ export class UserService {
           email,
         )
       )
-        throw new BadRequestException(
-          `User ${username} with email ${email} is already exists`,
-        );
+        throw new ErrorManager({
+          type: 'BAD_REQUEST',
+          message: `User ${username} with email ${email} is already exists`,
+        });
 
       const entity = this.mapper.map(
         createUser,
@@ -83,12 +78,8 @@ export class UserService {
         UsersDto,
       );
     } catch (error) {
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-      throw new HttpException(
+      throw ErrorManager.createSignatureError(
         error?.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -103,9 +94,8 @@ export class UserService {
       );
       return usersDto;
     } catch (error) {
-      throw new HttpException(
+      throw ErrorManager.createSignatureError(
         error?.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -117,18 +107,15 @@ export class UserService {
       const user = await this.repository.findOneBy({ id });
 
       if (!user)
-        throw new NotFoundException(
-          `User with ${id} not found`,
-        );
+        throw new ErrorManager({
+          type: 'NOT_FOUND',
+          message: `User with ${id} not found`,
+        });
 
       return this.mapper.map(user, UsersEntity, UsersDto);
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new HttpException(
+      throw ErrorManager.createSignatureError(
         error?.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
@@ -144,12 +131,8 @@ export class UserService {
 
       return true;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      throw new HttpException(
+      throw ErrorManager.createSignatureError(
         error?.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
