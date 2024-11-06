@@ -35,8 +35,8 @@ async function bootstrap() {
         enableImplicitConversion: true,
       },
       disableErrorMessages: env === 'production',
-      exceptionFactory: errors => {
-        const result = errors.map(error => ({
+      exceptionFactory: (errors) => {
+        const result = errors.map((error) => ({
           property: error.property,
           message:
             error.constraints[
