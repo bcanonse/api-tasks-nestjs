@@ -6,7 +6,7 @@ import {
 } from '@nestjs/config';
 
 import { getSsl } from './get-ssl';
-import { environments } from 'src/environments';
+import { environments } from '../environments';
 
 const ssl = getSsl();
 
