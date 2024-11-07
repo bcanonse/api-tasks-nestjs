@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app.module';
@@ -6,6 +6,7 @@ import { CORS, API } from './config';
 import helmet from 'helmet';
 import {
   BadRequestException,
+  ClassSerializerInterceptor,
   ValidationPipe,
 } from '@nestjs/common';
 
@@ -46,6 +47,12 @@ async function bootstrap() {
         return new BadRequestException(result);
       },
     }),
+  );
+
+  const reflector = app.get(Reflector);
+
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(reflector),
   );
 
   const port = configService.get<number>('PORT', 3000);

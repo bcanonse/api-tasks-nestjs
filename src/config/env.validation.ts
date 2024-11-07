@@ -17,6 +17,12 @@ class EnvironmentVariables {
   @IsNotEmpty()
   @IsString()
   public readonly DATABASE_URL: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(10)
+  @Max(50)
+  public readonly HASH_SALT: number;
 }
 
 export function validate(config: Record<string, unknown>) {

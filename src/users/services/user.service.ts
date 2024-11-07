@@ -1,16 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigType } from '@nestjs/config';
 
 import { DeleteResult, Repository } from 'typeorm';
 
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 
+import * as bcrypt from 'bcrypt';
+
 import { UsersDto } from '../dto/user.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 
 import { UsersEntity } from '../entities/users.entity';
 import { ErrorManager } from '../../utils';
+import config from 'src/config/config';
 
 @Injectable()
 export class UserService {
@@ -18,6 +22,10 @@ export class UserService {
     @InjectRepository(UsersEntity)
     private readonly repository: Repository<UsersEntity>,
     @InjectMapper() private readonly mapper: Mapper,
+    @Inject(config.KEY)
+    private readonly configService: ConfigType<
+      typeof config
+    >,
   ) {}
 
   // Private methods
@@ -70,6 +78,11 @@ export class UserService {
         createUser,
         CreateUserDto,
         UsersEntity,
+      );
+
+      entity.password = await bcrypt.hash(
+        createUser.password,
+        this.configService.hashSalt,
       );
 
       return await this.mapper.mapAsync(
