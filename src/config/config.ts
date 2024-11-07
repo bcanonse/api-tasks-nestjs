@@ -9,5 +9,6 @@ export default registerAs('config', () => {
       expiresIn: process.env.JWT_EXPIRE_IN,
       secret: process.env.JWT_SECRET,
     },
+    apiRickAndMorty: process.env.API_RICK_AND_MORTY,
   };
 });

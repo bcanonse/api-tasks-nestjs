@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsUrl,
   Max,
   Min,
   validateSync,
@@ -31,6 +32,11 @@ class EnvironmentVariables {
   @IsNotEmpty()
   @IsString()
   public readonly JWT_EXPIRE_IN: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsUrl()
+  public readonly API_RICK_AND_MORTY: string;
 }
 
 export function validate(config: Record<string, unknown>) {

@@ -15,6 +15,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersEntity } from '../entities/users.entity';
 import { ErrorManager } from '../../utils';
 import config from 'src/config/config';
+import { HttpCustomService } from 'src/providers/http/http.service';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,7 @@ export class UserService {
     private readonly configService: ConfigType<
       typeof config
     >,
+    private readonly httpService: HttpCustomService,
   ) {}
 
   // Private methods
@@ -177,5 +179,9 @@ export class UserService {
         error?.message,
       );
     }
+  }
+
+  async getRickAndMorty() {
+    return await this.httpService.apiFindAll();
   }
 }

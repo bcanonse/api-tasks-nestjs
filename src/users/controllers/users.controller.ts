@@ -52,4 +52,10 @@ export class UsersController {
   async delete(@Param('id', ParseUUIDPipe) id: string) {
     return await this.usersService.delete(id);
   }
+
+  @PublicAccess()
+  @Get('list-characters')
+  async getRickAndMarty() {
+    return await this.usersService.getRickAndMorty();
+  }
 }
