@@ -9,6 +9,10 @@ import {
   ClassSerializerInterceptor,
   ValidationPipe,
 } from '@nestjs/common';
+import {
+  DocumentBuilder,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -54,6 +58,17 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(reflector),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('API Tasks')
+    .setDescription('Api Tasks with NestJS')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(
+    app,
+    config,
+  );
+  SwaggerModule.setup('docs', app, document);
 
   const port = configService.get<number>('PORT', 3000);
 

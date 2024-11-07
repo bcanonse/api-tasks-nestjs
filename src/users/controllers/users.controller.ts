@@ -18,7 +18,9 @@ import { PublicAccess } from 'src/auth/decorators/public.decorator.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { AccessLevelGuard } from 'src/auth/guards/access-level.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 @UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class UsersController {
