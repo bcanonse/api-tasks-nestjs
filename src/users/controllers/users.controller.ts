@@ -8,12 +8,16 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersDto } from '../dto/user.dto';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { PublicAccess } from 'src/auth/decorators/public.decorator.decorator';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UserService) {}
 
@@ -29,6 +33,7 @@ export class UsersController {
     return await this.usersService.getUser(id);
   }
 
+  @PublicAccess()
   @Post()
   async create(
     @Body() payload: CreateUserDto,
