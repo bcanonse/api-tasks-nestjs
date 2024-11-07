@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 
 import { ROLES } from '../../constants';
+import { UsersProjectsDto } from './user-project.dto';
 
 export class UsersDto {
   @AutoMap()
@@ -23,4 +24,7 @@ export class UsersDto {
 
   @AutoMap(() => String)
   public readonly role: ROLES;
+
+  @AutoMap(() => UsersProjectsDto)
+  public readonly projectsIncludes: UsersProjectsDto[];
 }

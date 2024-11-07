@@ -15,12 +15,16 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersDto } from '../dto/user.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { PublicAccess } from 'src/auth/decorators/public.decorator.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { AccessLevelGuard } from 'src/auth/guards/access-level.guard';
 
 @Controller('users')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class UsersController {
   constructor(private readonly usersService: UserService) {}
 
+  @Roles('ADMIN')
   @Get()
   async get(): Promise<UsersDto[]> {
     return await this.usersService.getUsers();
