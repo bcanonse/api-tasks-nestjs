@@ -156,4 +156,26 @@ export class UserService {
       );
     }
   }
+
+  public async findBy({
+    key,
+    value,
+  }: {
+    key: keyof UsersDto;
+    value: any;
+  }) {
+    try {
+      const user = await this.repository
+        .createQueryBuilder('user')
+        .addSelect('user.password')
+        .where({ [key]: value })
+        .getOne();
+
+      return user;
+    } catch (error) {
+      throw ErrorManager.createSignatureError(
+        error?.message,
+      );
+    }
+  }
 }

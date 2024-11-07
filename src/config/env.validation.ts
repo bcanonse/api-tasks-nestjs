@@ -23,6 +23,14 @@ class EnvironmentVariables {
   @Min(10)
   @Max(50)
   public readonly HASH_SALT: number;
+
+  @IsNotEmpty()
+  @IsString()
+  public readonly JWT_SECRET: string;
+
+  @IsNotEmpty()
+  @IsString()
+  public readonly JWT_EXPIRE_IN: string;
 }
 
 export function validate(config: Record<string, unknown>) {
